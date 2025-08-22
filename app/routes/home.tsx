@@ -1,8 +1,10 @@
 import type { Route } from "./+types/home";
 import  Navbar  from "../components/Navbar";
-import type { Key } from "react";
+import { useEffect, type Key } from "react";
 import { resumes } from "../../constants/index";
 import ResumeCard from "~/components/ResumeCard";
+import { useNavigate } from "react-router";
+import { usePuterStore } from "~/lib/puter";
 
 
 
@@ -14,6 +16,14 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
+
+const navigate = useNavigate();
+const { auth } = usePuterStore();
+
+useEffect(() => {
+  if (!auth.isAuthenticated) navigate("/auth?next=/");
+}, [auth.isAuthenticated]);
+
   return <main className="bg-[url('/images/bg-main.svg')] bg-cover">
             <Navbar />
             <section className="main-section"> 
